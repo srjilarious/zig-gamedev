@@ -939,6 +939,16 @@ pub const FPoint = extern struct {
 //
 //--------------------------------------------------------------------------------------------------
 pub const Surface = opaque {
+    pub fn createRGBSurfaceFrom(pixels: []u8, width: u32, height: u32, depth: i32, pitch: u32, r_mask: u32, g_mask: u32, b_mask: u32, a_mask: u32) Error!*Surface {
+        var surf_ptr = SDL_CreateRGBSurfaceFrom(&pixels[0], width, height, depth, pitch, r_mask, g_mask, b_mask, a_mask);
+        if (surf_ptr == null) {
+            return makeError();
+        }
+        return surf_ptr.?;
+    }
+
+    extern fn SDL_CreateRGBSurfaceFrom(pixels: *const u8, width: u32, height: u32, depth: i32, pitch: u32, r_mask: u32, g_mask: u32, b_mask: u32, a_mask: u32) ?*Surface;
+
     pub fn free(surface: *Surface) void {
         SDL_FreeSurface(surface);
     }
